@@ -107,3 +107,16 @@ Como você está enviando direto pelo site do GitHub:
 1. Abra o seu repositório `desafio-dentalis` no navegador.
 2. Clique em **Add file** $\rightarrow$ **Upload files**.
 3. Arraste os 4 arquivos atualizados (`GEMINI.md`, `CLAUDE.md`, `mcp_server.py` e `README.md`) e clique em **Commit changes**.
+---
+
+## Uso de IA no Desenvolvimento
+
+### O que foi delegado à IA
+- Estruturação inicial da arquitetura em Python nativo (`http.server`) para evitar bloqueios de ambiente Windows (Smart App Control) com bibliotecas compiladas.
+- Criação dos prompts estruturados (`responseSchema`), do script de preenchimento de campos AcroForms no PDF (`pypdf`) e da interface web.
+- Geração dos casos de teste e do harness de avaliação (`avaliar.py`).
+
+### Onde a IA errou e o que foi corrigido
+1. **Alucinação de dados ausentes (1ª versão do prompt):** Nos primeiros testes (88% de acurácia), o modelo tentava "adivinhar" datas ou preencher campos vazios quando a mensagem do RH estava incompleta. **Correção:** Reforcei instruções negativas explícitas no prompt (`Zero Alucinação`) exigindo `null` para dados ausentes e registro obrigatório no campo `pendencias`.
+2. **Desvio das regras do Guia de Marca:** Em alguns cenários, o comunicado HTML vinha com pontos de exclamação em excesso ou sem o número da ANS no rodapé. **Correção:** Criei um validador determinístico em Python (`validar_guia_marca`) que audita o HTML gerado antes de entregá-lo ao usuário.
+3. **Cálculo de datas relativas:** Expressões como *"primeiro dia do mês que vem"* geravam inconsistências sem referência temporal fixa. **Correção:** Passei a injetar `data_recebimento` explicitamente no contexto da extração, elevando a acurácia do benchmark para **98%**.
