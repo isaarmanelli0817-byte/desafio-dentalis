@@ -80,4 +80,30 @@ Os arquivos gerados para cada mensagem (PDF preenchido, JSON extraído e as 2 op
 
 6. *(Opcional)* **Reexecute a avaliação das 5 mensagens via terminal:**
 
-       python avaliar.py
+       python avaliar.py---
+
+## Uso por Agentes de IA (MCP & Contexto de Projeto)
+
+Este repositório inclui:
+- **Regras e Contexto para Agentes (`GEMINI.md` e `CLAUDE.md`):** Documentam as regras de negócio da Dentalis, padrões de saída, regras do Guia de Marca e o fluxo do harness de avaliação (`avaliar.py`).
+- **Servidor MCP (`mcp_server.py`):** Expõe a solução via **Model Context Protocol (JSON-RPC 2.0 sobre `stdio`)** com duas ferramentas prontas para agentes:
+  - `processar_implantacao_dentalis`: extrai dados de mensagens do RH, preenche o PDF oficial e retorna os comunicados validados.
+  - `executar_benchmark_dentalis`: roda o harness de avaliação nos 5 cenários e devolve a acurácia.
+
+Exemplo de configuração para clientes MCP (como Claude Desktop ou Cursor):
+
+```json
+{
+  "mcpServers": {
+    "dentalis-implantacao": {
+      "command": "python",
+      "args": ["mcp_server.py"]
+    }
+  }
+}---
+
+### Passo 5: Subir esses 4 arquivos no GitHub
+Como você está enviando direto pelo site do GitHub:
+1. Abra o seu repositório `desafio-dentalis` no navegador.
+2. Clique em **Add file** $\rightarrow$ **Upload files**.
+3. Arraste os 4 arquivos atualizados (`GEMINI.md`, `CLAUDE.md`, `mcp_server.py` e `README.md`) e clique em **Commit changes**.
